@@ -1,0 +1,22 @@
+@RestController
+@RequestMapping("/api")
+public class DecoupageController {
+
+    @Autowired
+    private RegionService regionService;
+
+    @Autowired
+    private PachalikService pachalikService;
+
+    // Jib ga3 les régions
+    @GetMapping("/regions")
+    public List<Region> getAllRegions() {
+        return regionService.findAll();
+    }
+
+    // Jib les pachaliks d'une région spécifique
+    @GetMapping("/pachaliks/{regionId}")
+    public List<Pachalik> getPachaliksByRegion(@PathVariable Long regionId) {
+        return pachalikService.findByRegionId(regionId);
+    }
+}
