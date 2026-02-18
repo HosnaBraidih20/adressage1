@@ -1,7 +1,9 @@
 package com.example.demo.service;
 
-import com.example.demo.model.Auxiliaire;
+
 import java.util.List;
+
+import com.example.demo.model.Auxiliaire;
 
 public interface AuxiliaireService {
     List<Auxiliaire> findAll();

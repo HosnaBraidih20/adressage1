@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.model.Commune;
+import com.example.demo.repository.CommuneRepository;
 import com.example.demo.service.CommuneService;
 
 @RestController
@@ -20,9 +21,11 @@ import com.example.demo.service.CommuneService;
 public class CommuneController {
 
     private final CommuneService communeService;
+    private final CommuneRepository communeRepository;
 
-    public CommuneController(CommuneService communeService) {
+    public CommuneController(CommuneService communeService, CommuneRepository communeRepository) {
         this.communeService = communeService;
+        this.communeRepository = communeRepository;
     }
 
     @GetMapping
@@ -38,6 +41,20 @@ public class CommuneController {
 
     @PostMapping
     public Commune create(@RequestBody Commune commune) {
+        // For new records, always clear the ID to let PostgreSQL generate it
+        // This prevents duplicate key violations when client sends an ID
+        commune.setIdCommune(null);
+        
+        // Check if a commune with the same commandement and name already exists
+        if (commune.getCommandement() != null && commune.getNom_commune_fr() != null) {
+            var allByCommandement = communeRepository.findByCommandementId(commune.getCommandement().getId());
+            for (Commune c : allByCommandement) {
+                if (commune.getNom_commune_fr().equals(c.getNom_commune_fr())) {
+                    return c;  // Return existing commune instead of creating duplicate
+                }
+            }
+        }
+        
         return communeService.save(commune);
     }
 

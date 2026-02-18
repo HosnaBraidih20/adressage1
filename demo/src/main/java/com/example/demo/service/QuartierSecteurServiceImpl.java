@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.model.QuartierSecteur;
-import com.example.demo.model.QuartierSecteurId; // زدتها للأمان
 import com.example.demo.repository.QuartierSecteurRepository;
 
 @Service
@@ -24,8 +23,7 @@ public class QuartierSecteurServiceImpl implements QuartierSecteurService {
     }
 
     @Override
-    public QuartierSecteur findById(QuartierSecteurId id) {
-        // الـ Exception هنا مزيانة، خليتها كيف ما هي
+    public QuartierSecteur findById(Long id) {
         return quartierSecteurRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Association Quartier-Secteur introuvable !"));
     }
@@ -38,7 +36,7 @@ public class QuartierSecteurServiceImpl implements QuartierSecteurService {
 
     @Override
     @Transactional
-    public void delete(QuartierSecteurId id) {
+    public void delete(Long id) {
         if (!quartierSecteurRepository.existsById(id)) {
             throw new RuntimeException("Impossible de supprimer : Association introuvable !");
         }

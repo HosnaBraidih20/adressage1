@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.model.QuartierSecteur;
-import com.example.demo.model.QuartierSecteurId;
 import com.example.demo.service.QuartierSecteurService;
 
 @RestController
@@ -29,12 +28,8 @@ public class QuartierSecteurController {
         return quartierSecteurService.findAll();
     }
 
-    // Bach tjib wahed: /api/quartier-secteurs/1/5
-    @GetMapping("/{idQuartier}/{idSecteur}")
-    public QuartierSecteur getById(@PathVariable Long idQuartier, @PathVariable Long idSecteur) {
-        QuartierSecteurId id = new QuartierSecteurId();
-        id.setIdQuartier(idQuartier);
-        id.setIdSecteur(idSecteur);
+    @GetMapping("/{id}")
+    public QuartierSecteur getById(@PathVariable Long id) {
         return quartierSecteurService.findById(id);
     }
 
@@ -43,11 +38,8 @@ public class QuartierSecteurController {
         return quartierSecteurService.save(qs);
     }
 
-    @DeleteMapping("/{idQuartier}/{idSecteur}")
-    public void delete(@PathVariable Long idQuartier, @PathVariable Long idSecteur) {
-        QuartierSecteurId id = new QuartierSecteurId();
-        id.setIdQuartier(idQuartier);
-        id.setIdSecteur(idSecteur);
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable Long id) {
         quartierSecteurService.delete(id);
     }
 }

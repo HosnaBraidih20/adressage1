@@ -1,4 +1,6 @@
 package com.example.demo.model;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -10,6 +12,7 @@ import lombok.Data;
 @Entity @Data
 public class Commune {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonProperty("id_commune")
     private Long idCommune;
     private String nom_commune_ar;
     private String nom_commune_fr;

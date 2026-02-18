@@ -1,17 +1,23 @@
 package com.example.demo.model;
-import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.MapsId;
+import jakarta.persistence.SequenceGenerator;
 import lombok.Data;
 
 @Entity @Data
 public class QuartierSecteur {
-    @EmbeddedId
-    private QuartierSecteurId id;
-    @ManyToOne @MapsId("idQuartier") @JoinColumn(name = "id")//id_quartier
+    @Id 
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "quartier_secteur_seq")
+    @SequenceGenerator(name = "quartier_secteur_seq", sequenceName = "quartier_secteur_id_seq", allocationSize = 1)
+    private Long id;
+    
+    @ManyToOne @JoinColumn(name = "id_quartier", nullable = false)
     private Quartier quartier;
-    @ManyToOne @MapsId("idSecteur") @JoinColumn(name = "id_secteur")
+    
+    @ManyToOne @JoinColumn(name = "id_secteur", nullable = false)
     private Secteur secteur;
 }

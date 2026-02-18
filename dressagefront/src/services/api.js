@@ -39,5 +39,11 @@ export const addQuartier = (data) => API.post('/quartiers', data);
 export const addSecteur = (data) => API.post('/secteurs', data);
 export const addCommune = (data) => API.post('/communes', data);
 
+
+
+export const getAuxiliaires = () => API.get("/auxiliaires");
+export const addAuxiliaire = (data) => API.post("/auxiliaires", data);
+export const updateAuxiliaire = (id, data) => API.put(`/auxiliaires/${id}`, data);
+export const deleteAuxiliaire = (id) => API.delete(`/auxiliaires/${id}`);
 export default API
 

@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.model.Quartier;
 import com.example.demo.model.QuartierSecteur;
-import com.example.demo.model.QuartierSecteurId;
 import com.example.demo.model.Secteur;
 import com.example.demo.repository.QuartierRepository;
 import com.example.demo.repository.QuartierSecteurRepository;
@@ -69,12 +68,7 @@ public List<Secteur> getSecteursByQuartier(@PathVariable Long quartierId) {
             Long quartierIdValue = Long.valueOf(quartierIdObj.toString());
             Quartier quartier = quartierRepository.findById(quartierIdValue).orElse(null);
             if (quartier != null) {
-                QuartierSecteurId qsId = new QuartierSecteurId();
-                qsId.setIdQuartier(quartier.getId_quartier());
-                qsId.setIdSecteur(saved.getId());
-                
                 QuartierSecteur qs = new QuartierSecteur();
-                qs.setId(qsId);
                 qs.setQuartier(quartier);
                 qs.setSecteur(saved);
                 

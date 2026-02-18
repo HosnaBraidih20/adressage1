@@ -30,8 +30,16 @@ const LocationSummary = ({ data, labels }) => {
             </p>
           </div>
         </div>
+
+
+
+
       ))}
     </div>
+
+
+
+
   );
 };
 
