@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Silent Check SSO</title>
+</head>
+<body>
+    <script>
+        /**
+         * Silent Check SSO
+         * Used by Keycloak to check SSO status without redirecting
+         * This file is referenced in KeycloakContext.jsx silentCheckSsoRedirectUri
+         */
+        parent.postMessage(location.href, location.origin);
+    </script>
+</body>
+</html>

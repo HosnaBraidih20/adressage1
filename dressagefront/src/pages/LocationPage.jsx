@@ -1,12 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { 
   Map, MapPin, Building2, Landmark, ListTree, 
   Home, Building, Layers, ShieldCheck 
 } from 'lucide-react';
+import { useKeycloak } from '../context/KeycloakContext';
 import * as api from '../services/api';
 
 const LocationPage = () => {
-  // 1. Mise à jour de l'état pour les 7 niveaux
+  const { isInitialized, isAuthenticated, loading: authLoading } = useKeycloak();
   const [stats, setStats] = useState({
     regions: 0,
     provinces: 0,
@@ -17,21 +18,54 @@ const LocationPage = () => {
     secteurs: 0
   });
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  
+  // Prevent double fetch in React 18 StrictMode
+  const isFetchRun = useRef(false);
 
   useEffect(() => {
+    // Only fetch when Keycloak is initialized AND user is authenticated
+    if (!isInitialized || !isAuthenticated || authLoading) {
+      return;
+    }
+
+    // Prevent double fetch in React 18 StrictMode
+    if (isFetchRun.current) {
+      return;
+    }
+    isFetchRun.current = true;
+
     const fetchStats = async () => {
       try {
-        const res = await api.getRegions();
-        setStats(prev => ({ ...prev, regions: res.data.length }));
-        // Tu pourras ajouter ici les autres appels API au fur et à mesure
+        setLoading(true);
+        setError(null);
+        
+        // Wait a small moment for token to be fully loaded
+        await new Promise(resolve => setTimeout(resolve, 100));
+        
+        console.log('📊 Fetching administrative statistics...');
+        
+        // Fetch regions
+        const regionsRes = await api.getRegions();
+        const regionCount = regionsRes?.data?.length || 0;
+        
+        console.log(`✅ Regions fetched: ${regionCount}`);
+        
+        setStats(prev => ({ 
+          ...prev, 
+          regions: regionCount
+        }));
+        
         setLoading(false);
       } catch (err) {
-        console.error("Error fetching stats", err);
+        console.error('❌ Error fetching stats:', err);
+        setError('Failed to load statistics. Please refresh the page.');
         setLoading(false);
       }
     };
+    
     fetchStats();
-  }, []);
+  }, [isInitialized, isAuthenticated, authLoading]);
 
   const StatCard = ({ title, count, icon: Icon, color }) => (
     <div className="bg-white p-5 rounded-[2rem] shadow-sm border border-slate-100 flex items-center space-x-4 hover:shadow-md transition-all hover:-translate-y-1">

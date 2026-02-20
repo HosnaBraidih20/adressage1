@@ -22,8 +22,8 @@ SELECT setval('secteur_id_secteur_seq', (SELECT COALESCE(MAX(id_secteur), 0) + 1
 -- Reset pachalik sequence
 SELECT setval('pachalik_id_pachalik_seq', (SELECT COALESCE(MAX(id_pachalik), 0) + 1 FROM pachalik), false);
 
--- Reset auxiliaire sequence
-SELECT setval('auxiliaire_id_auxiliaire_seq', (SELECT COALESCE(MAX(id_auxiliaire), 0) + 1 FROM auxiliaire), false);
+-- Reset auxiliaire sequence (commented out - table may not exist yet)
+-- SELECT setval('auxiliaire_id_auxiliaire_seq', (SELECT COALESCE(MAX(id_auxiliaire), 0) + 1 FROM auxiliaire), false);
 
 -- Reset citoyen sequence
 SELECT setval('citoyen_id_citoyen_seq', (SELECT COALESCE(MAX(id_citoyen), 0) + 1 FROM citoyen), false);
